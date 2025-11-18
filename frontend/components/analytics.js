@@ -1,3 +1,4 @@
+// analytics.js
 import { loadTrades } from './utils.js';
 
 export async function renderAnalytics() {
@@ -9,9 +10,13 @@ export async function renderAnalytics() {
     <p>Win/Loss Ratio: ${stats.winLossRatio.toFixed(2)}</p>
     <p>Average R: ${stats.averageR.toFixed(2)}</p>
     <canvas id="equityChart" width="400" height="200"></canvas>
+    <canvas id="rHistogram" width="400" height="200"></canvas>
+    <canvas id="tickerChart" width="400" height="200"></canvas>
   `;
 
   renderEquityChart(stats.equityCurve);
+  renderRDistribution(trades);
+  renderPerformanceByTicker(trades);
 }
 
 function calculateStats(trades) {
@@ -48,12 +53,49 @@ function renderEquityChart(data) {
         fill: false
       }]
     },
-    options: {
-      responsive: true,
-      scales: {
-        x: { display: true },
-        y: { display: true }
-      }
-    }
+    options: { responsive: true }
+  });
+}
+
+function renderRDistribution(trades) {
+  const rValues = trades.map(t => (t.exit - t.entry) * t.size * (t.direction === 'long' ? 1 : -1));
+  const ctx = document.getElementById('rHistogram').getContext('2d');
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: rValues.map((_, i) => `Trade ${i + 1}`),
+      datasets: [{
+        label: 'R Distribution',
+        data: rValues,
+        backgroundColor: rValues.map(r => r > 0 ? 'green' : 'red')
+      }]
+    },
+    options: { responsive: true }
+  });
+}
+
+function renderPerformanceByTicker(trades) {
+  const tickerMap = {};
+  trades.forEach(t => {
+    const r = (t.exit - t.entry) * t.size * (t.direction === 'long' ? 1 : -1);
+    tickerMap[t.ticker] = (tickerMap[t.ticker] || 0) + r;
+  });
+
+  const labels = Object.keys(tickerMap);
+  const data = Object.values(tickerMap);
+  const ctx = document.getElementById('tickerChart').getContext('2d');
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Performance by Ticker',
+        data,
+        backgroundColor: data.map(r => r > 0 ? 'blue' : 'orange')
+      }]
+    },
+    options: { responsive: true }
   });
 }
