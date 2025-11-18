@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Trade Journal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+  <header class="header">
+    <h1>Trade Journal</h1>
+    <p>Log setups, breakdowns, and recovery pivots with timestamped clarity.</p>
+  </header>
+
+  <main class="container">
+    <!-- Trade Entry Form -->
+    <section class="card">
+      <h2>Log a trade</h2>
+      <form id="tradeForm" class="grid">
+        <div class="field">
+          <label for="ticker">Ticker</label>
+          <input id="ticker" name="ticker" type="text" placeholder="AAPL, ES, BTC" required />
+        </div>
+
+        <div class="field">
+          <label for="direction">Direction</label>
+          <select id="direction" name="direction" required>
+            <option value="long">Long</option>
+            <option value="short">Short</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="entry">Entry price</label>
+          <input id="entry" name="entry" type="number" step="0.0001" placeholder="0.00" required />
+        </div>
+
+        <div class="field">
+          <label for="exit">Exit price</label>
+          <input id="exit" name="exit" type="number" step="0.0001" placeholder="0.00" required />
+        </div>
+
+        <div class="field">
+          <label for="size">Position size</label>
+          <input id="size" name="size" type="number" step="0.0001" placeholder="0.00" required />
+        </div>
+
+        <div class="field full">
+          <label for="notes">Notes</label>
+          <textarea id="notes" name="notes" rows="3" placeholder="Strategy, triggers, emotions, inflection points"></textarea>
+        </div>
+
+        <div class="actions">
+          <button type="submit" class="btn primary">Log trade</button>
+          <button type="reset" class="btn">Reset</button>
+        </div>
+      </form>
+      <p id="formStatus" class="status" aria-live="polite"></p>
+    </section>
+
+    <!-- Controls -->
+    <section class="card">
+      <h2>Archive controls</h2>
+      <div class="controls grid">
+        <div class="field">
+          <label for="filterTicker">Filter by ticker</label>
+          <input id="filterTicker" type="text" placeholder="e.g., AAPL" />
+        </div>
+
+        <div class="field">
+          <label for="filterDirection">Filter by direction</label>
+          <select id="filterDirection">
+            <option value="">All</option>
+            <option value="long">Long</option>
+            <option value="short">Short</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="sortBy">Sort by</label>
+          <select id="sortBy">
+            <option value="timestamp_desc">Newest first</option>
+            <option value="timestamp_asc">Oldest first</option>
+            <option value="ticker_asc">Ticker A→Z</option>
+            <option value="ticker_desc">Ticker Z→A</option>
+          </select>
+        </div>
+
+        <div class="actions">
+          <button id="applyFilters" class="btn">Apply</button>
+          <button id="clearFilters" class="btn">Clear</button>
+          <button id="exportCsv" class="btn">Export CSV</button>
+          <button id="refresh" class="btn">Refresh</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Archive Table -->
+    <section class="card">
+      <h2>Journal archive</h2>
+      <div class="table-wrap">
+        <table id="tradeTable">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Timestamp</th>
+              <th>Ticker</th>
+              <th>Dir</th>
+              <th>Entry</th>
+              <th>Exit</th>
+              <th>Size</th>
+              <th>R</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- rows injected by JS -->
+          </tbody>
+        </table>
+      </div>
+      <p id="archiveStatus" class="status" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <small>© Trade Journal — modular legacy artifact</small>
+  </footer>
+
+  <!-- Components -->
+  <script src="components/utils.js"></script>
+  <script src="components/tradeTable.js"></script>
+  <!-- App -->
+  <script src="app.js"></script>
+</body>
+</html>
