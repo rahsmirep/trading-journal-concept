@@ -1,95 +1,149 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>EchoFrame Trade Journal</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <meta charset="utf-8" />
+  <title>Trade Journal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="style.css" rel="stylesheet" />
+  <!-- Bootstrap for styling -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+  <!-- Chart.js for analytics -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body class="bg-light">
-  <div class="container py-4">
-    <h1 class="mb-4">EchoFrame Trade Journal</h1>
+<body>
+  <header class="header bg-dark text-white p-3">
+    <h1>Trade Journal</h1>
+    <p>Log setups, breakdowns, and recovery pivots with timestamped clarity.</p>
+  </header>
 
-    <!-- Trade Form -->
-    <form id="trade-form" class="row g-3 mb-5">
-      <div class="col-md-2">
-        <input type="text" class="form-control" id="ticker" placeholder="Ticker" required />
-      </div>
-      <div class="col-md-2">
-        <input type="number" class="form-control" id="entry" placeholder="Entry Price" required />
-      </div>
-      <div class="col-md-2">
-        <input type="number" class="form-control" id="exit" placeholder="Exit Price" required />
-      </div>
-      <div class="col-md-2">
-        <input type="number" class="form-control" id="size" placeholder="Size" required />
-      </div>
-      <div class="col-md-2">
-        <select class="form-select" id="direction" required>
-          <option value="">Direction</option>
-          <option value="long">Long</option>
-          <option value="short">Short</option>
-        </select>
-      </div>
-      <div class="col-md-2">
-        <input type="text" class="form-control" id="notes" placeholder="Notes" />
-      </div>
-      <div class="col-12">
-        <button type="submit" class="btn btn-primary">Log Trade</button>
-      </div>
-    </form>
+  <main class="container my-4">
+    <!-- Trade Entry Form -->
+    <section class="card p-3 mb-4">
+      <h2>Log a trade</h2>
+      <form id="tradeForm" class="row g-3">
+        <div class="col-md-2">
+          <label for="ticker" class="form-label">Ticker</label>
+          <input id="ticker" name="ticker" type="text" class="form-control" placeholder="AAPL, ES, BTC" required />
+        </div>
 
-    <!-- Trade Table -->
-    <h2 class="mb-3">Trade Archive</h2>
-    <table class="table table-bordered table-striped">
-      <thead class="table-dark">
-        <tr>
-          <th>Ticker</th>
-          <th>Entry</th>
-          <th>Exit</th>
-          <th>Size</th>
-          <th>Direction</th>
-          <th>Notes</th>
-          <th>Timestamp</th>
-        </tr>
-      </thead>
-      <tbody id="trade-table-body"></tbody>
-    </table>
+        <div class="col-md-2">
+          <label for="direction" class="form-label">Direction</label>
+          <select id="direction" name="direction" class="form-select" required>
+            <option value="long">Long</option>
+            <option value="short">Short</option>
+          </select>
+        </div>
 
-    <!-- Analytics Section -->
-    <h2 class="mt-5 mb-3">Analytics</h2>
-    <div id="analytics" class="mb-5">
-      <!-- Injected by analytics.js -->
-    </div>
-  </div>
+        <div class="col-md-2">
+          <label for="entry" class="form-label">Entry price</label>
+          <input id="entry" name="entry" type="number" step="0.0001" class="form-control" placeholder="0.00" required />
+        </div>
 
-  <script type="module">
-    import { submitTrade, loadTrades } from './utils.js';
-    import { renderTradeTable } from './tradeTable.js';
-    import { renderAnalytics } from './analytics.js';
+        <div class="col-md-2">
+          <label for="exit" class="form-label">Exit price</label>
+          <input id="exit" name="exit" type="number" step="0.0001" class="form-control" placeholder="0.00" required />
+        </div>
 
-    document.getElementById('trade-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const trade = {
-        ticker: document.getElementById('ticker').value.trim(),
-        entry: parseFloat(document.getElementById('entry').value),
-        exit: parseFloat(document.getElementById('exit').value),
-        size: parseInt(document.getElementById('size').value),
-        direction: document.getElementById('direction').value,
-        notes: document.getElementById('notes').value.trim()
-      };
+        <div class="col-md-2">
+          <label for="size" class="form-label">Position size</label>
+          <input id="size" name="size" type="number" step="0.0001" class="form-control" placeholder="0.00" required />
+        </div>
 
-      const message = await submitTrade(trade);
-      alert(message);
-      e.target.reset();
-      await renderTradeTable();
-      await renderAnalytics();
-    });
+        <div class="col-12">
+          <label for="notes" class="form-label">Notes</label>
+          <textarea id="notes" name="notes" rows="3" class="form-control" placeholder="Strategy, triggers, emotions, inflection points"></textarea>
+        </div>
 
-    // Initial load
-    renderTradeTable();
-    renderAnalytics();
-  </script>
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary">Log trade</button>
+          <button type="reset" class="btn btn-secondary">Reset</button>
+        </div>
+      </form>
+      <p id="formStatus" class="status mt-2" aria-live="polite"></p>
+    </section>
+
+    <!-- Archive Controls -->
+    <section class="card p-3 mb-4">
+      <h2>Archive controls</h2>
+      <div class="row g-3">
+        <div class="col-md-3">
+          <label for="filterTicker" class="form-label">Filter by ticker</label>
+          <input id="filterTicker" type="text" class="form-control" placeholder="e.g., AAPL" />
+        </div>
+
+        <div class="col-md-3">
+          <label for="filterDirection" class="form-label">Filter by direction</label>
+          <select id="filterDirection" class="form-select">
+            <option value="">All</option>
+            <option value="long">Long</option>
+            <option value="short">Short</option>
+          </select>
+        </div>
+
+        <div class="col-md-3">
+          <label for="sortBy" class="form-label">Sort by</label>
+          <select id="sortBy" class="form-select">
+            <option value="timestamp_desc">Newest first</option>
+            <option value="timestamp_asc">Oldest first</option>
+            <option value="ticker_asc">Ticker A→Z</option>
+            <option value="ticker_desc">Ticker Z→A</option>
+          </select>
+        </div>
+
+        <div class="col-md-3 d-flex align-items-end">
+          <button id="applyFilters" class="btn btn-info me-2">Apply</button>
+          <button id="clearFilters" class="btn btn-secondary me-2">Clear</button>
+          <button id="exportCsv" class="btn btn-success me-2">Export CSV</button>
+          <button id="refresh" class="btn btn-dark">Refresh</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Archive Table -->
+    <section class="card p-3 mb-4">
+      <h2>Journal archive</h2>
+      <div class="table-responsive">
+        <table id="tradeTable" class="table table-striped table-bordered">
+          <thead class="table-dark">
+            <tr>
+              <th>Ticker</th>
+              <th>Entry</th>
+              <th>Exit</th>
+              <th>Size</th>
+              <th>Direction</th>
+              <th>Notes</th>
+              <th>Timestamp</th>
+            </tr>
+          </thead>
+          <tbody id="trade-table-body">
+            <!-- rows injected by JS -->
+          </tbody>
+        </table>
+      </div>
+      <p id="archiveStatus" class="status mt-2" aria-live="polite"></p>
+    </section>
+
+    <!-- Analytics Dashboard -->
+    <section class="card p-3 mb-4">
+      <h2>Performance analytics</h2>
+      <div id="analytics">
+        <canvas id="equityChart" width="400" height="200"></canvas>
+        <canvas id="rHistogram" width="400" height="200"></canvas>
+        <canvas id="tickerChart" width="400" height="200"></canvas>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer bg-dark text-white text-center p-3">
+    <small>© Trade Journal — modular legacy artifact</small>
+  </footer>
+
+  <!-- Components -->
+  <script type="module" src="components/utils.js"></script>
+  <script type="module" src="components/tradeTable.js"></script>
+  <script type="module" src="components/analytics.js"></script>
+  <script type="module" src="components/filters.js"></script>
+  <!-- App -->
+  <script type="module" src="app.js"></script>
 </body>
 </html>
