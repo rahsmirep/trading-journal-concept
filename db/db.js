@@ -12,7 +12,7 @@ const db = mysql.createConnection({
     host: (process.env.DB_HOST || 'localhost').trim(),
     user: (process.env.DB_USER || 'root').trim(),
     password: (process.env.DB_PASS || '').trim(),
-    database: (process.env.DB_NAME || 'trading_journal_concept').trim(),
+    database: (process.env.DB_NAME || 'trade_journal').trim(),
 });
 
 // Optional: Test connection on startup and provide helpful error output
