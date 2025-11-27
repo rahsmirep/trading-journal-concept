@@ -22,3 +22,10 @@ const PORT = 3000;
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on http://0.0.0.0:${PORT}`); // Logs server status
 });
+
+app.get('/trades', (req, res) => {
+  db.query('SELECT * FROM trades ORDER BY entry_date DESC', (err, results) => {
+    if (err) return res.status(500).send(err);
+    res.json(results);
+  });
+});
