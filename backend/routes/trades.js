@@ -15,6 +15,8 @@ function mapRowToTrade(row) {
 		size: parseFloat(row.size),
 		direction: row.direction,
 		notes: row.notes,
+		entry_date: row.entry_date,
+		exit_date: row.exit_date,
 		timestamp: row.timestamp,
 	};
 }
