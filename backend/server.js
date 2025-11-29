@@ -10,6 +10,8 @@ app.use(express.json());                  // Parses incoming JSON bodies
 
 // ✅ API Routes
 app.use('/api/trades', tradeRoutes);      // Mounts trade routes at /api/trades
+// Also mount the same routes (compatibility) at /trades for PowerShell or legacy calls
+app.use('/trades', tradeRoutes);
 
 // ✅ Health Check Route
 app.get('/', (req, res) => {
