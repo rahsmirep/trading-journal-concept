@@ -29,7 +29,8 @@ router.get('/', async (req, res) => {
 	} catch (err) {
 		// DB unavailable: return in-memory fallback
 		console.warn('DB read failed; falling back to in-memory store:', err.message);
-		res.json(fallbackTrades.slice().reverse());
+		res.json(fallbackTrades.slice().reverse())
+		;
 	}
 });
 
@@ -38,7 +39,7 @@ router.post('/', async (req, res) => {
 	const body = req.body || {};
 	// Accept either the native schema (ticker/entry/exit/size/direction/notes)
 	// or legacy/frontend schema (symbol/entry_date/exit_date/pnl/strategy)
-	let { ticker, entry, exit, size, direction, notes } = body;
+	let { ticker, entry, exit, size, direction, notes, pnl, strategy } = body;
 	const entry_date = body.entry_date || null;
 	const exit_date = body.exit_date || null;
 	// Support legacy payload: convert to internal schema
@@ -59,6 +60,9 @@ router.post('/', async (req, res) => {
 		if (body.exit_date) extras.push(`exit_date: ${body.exit_date}`);
 		if (typeof body.pnl !== 'undefined') extras.push(`pnl: ${body.pnl}`);
 		notes = (notes ? notes + ' | ' : '') + extras.join(' | ');
+		// Capture legacy pnl and strategy fields explicitly
+		pnl = typeof body.pnl !== 'undefined' ? body.pnl : pnl;
+		strategy = body.strategy || strategy;
 	}
 
 	if (!ticker || typeof entry === 'undefined' || typeof exit === 'undefined' || typeof size === 'undefined') {
@@ -67,8 +71,8 @@ router.post('/', async (req, res) => {
 
 	try {
 		// Use `exit_price` column and include date fields in the insert
-		const sql = "INSERT INTO trades (ticker, entry, exit_price, size, direction, notes, entry_date, exit_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-		const [result] = await db.promise().execute(sql, [ticker, entry, exit, size, direction || null, notes || null, entry_date, exit_date]);
+		const sql = "INSERT INTO trades (ticker, entry, exit_price, size, direction, notes, pnl, strategy, entry_date, exit_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		const [result] = await db.promise().execute(sql, [ticker, entry, exit, size, direction || null, notes || null, pnl || null, strategy || null, entry_date, exit_date]);
 		const [rows] = await db.promise().query('SELECT * FROM trades WHERE id = ?', [result.insertId]);
 		if (rows.length === 0) return res.status(500).json({ error: 'Created trade not found' });
 		return res.status(201).json(mapRowToTrade(rows[0]));

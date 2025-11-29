@@ -6,9 +6,13 @@ CREATE TABLE trades (
     id INT AUTO_INCREMENT PRIMARY KEY,
     ticker VARCHAR(20) NOT NULL,
     entry DECIMAL(10,4) NOT NULL,
-    exit DECIMAL(10,4) NOT NULL,
+    exit_price DECIMAL(10,4) NOT NULL,
     size DECIMAL(10,4) not null,
     direction ENUM('long', 'short'),
     notes TEXT,
-    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
-); 
+    pnl DECIMAL(12,4) NULL,
+    strategy VARCHAR(100) NULL,
+    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+    entry_date DATE NULL,
+    exit_date DATE NULL
+);
