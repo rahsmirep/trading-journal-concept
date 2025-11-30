@@ -2,20 +2,21 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Trade Journal</title>
+  <title>Rah Method</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link href="style.css" rel="stylesheet" />
-  <!-- Bootstrap for styling -->
+  <!-- Bootstrap (optional for layout) -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
   <!-- Chart.js for analytics -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <header class="header bg-dark text-white p-3">
-    <h1>Trade Journal</h1>
-    <p>Log setups, breakdowns, and recovery pivots with timestamped clarity.</p>
+  <!-- Header -->
+  <header>
+    <h1>Rah Method</h1>
   </header>
 
+  <!-- Main Content -->
   <main class="container my-4">
     <!-- Trade Entry Form -->
     <section class="card p-3 mb-4">
@@ -69,81 +70,3 @@
         <div class="col-md-3">
           <label for="filterTicker" class="form-label">Filter by ticker</label>
           <input id="filterTicker" type="text" class="form-control" placeholder="e.g., AAPL" />
-        </div>
-
-        <div class="col-md-3">
-          <label for="filterDirection" class="form-label">Filter by direction</label>
-          <select id="filterDirection" class="form-select">
-            <option value="">All</option>
-            <option value="long">Long</option>
-            <option value="short">Short</option>
-          </select>
-        </div>
-
-        <div class="col-md-3">
-          <label for="sortBy" class="form-label">Sort by</label>
-          <select id="sortBy" class="form-select">
-            <option value="timestamp_desc">Newest first</option>
-            <option value="timestamp_asc">Oldest first</option>
-            <option value="ticker_asc">Ticker A→Z</option>
-            <option value="ticker_desc">Ticker Z→A</option>
-          </select>
-        </div>
-
-        <div class="col-md-3 d-flex align-items-end">
-          <button id="applyFilters" class="btn btn-info me-2">Apply</button>
-          <button id="clearFilters" class="btn btn-secondary me-2">Clear</button>
-          <button id="exportCsv" class="btn btn-success me-2">Export CSV</button>
-          <button id="refresh" class="btn btn-dark">Refresh</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- Archive Table -->
-    <section class="card p-3 mb-4">
-      <h2>Journal archive</h2>
-      <div class="table-responsive">
-        <table id="tradeTable" class="table table-striped table-bordered">
-          <thead class="table-dark">
-            <tr>
-              <th>Ticker</th>
-              <th>Entry</th>
-              <th>Exit</th>
-              <th>Size</th>
-              <th>Direction</th>
-              <th>Notes</th>
-              <th>Timestamp</th>
-            </tr>
-          </thead>
-          <tbody id="trade-table-body">
-            <!-- rows injected by JS -->
-          </tbody>
-        </table>
-      </div>
-      <p id="archiveStatus" class="status mt-2" aria-live="polite"></p>
-    </section>
-
-    <!-- Analytics Dashboard -->
-    <section class="card p-3 mb-4">
-      <h2>Performance analytics</h2>
-      <div id="analytics">
-        <canvas id="equityChart" width="400" height="200"></canvas>
-        <canvas id="rHistogram" width="400" height="200"></canvas>
-        <canvas id="tickerChart" width="400" height="200"></canvas>
-      </div>
-    </section>
-  </main>
-
-  <footer class="footer bg-dark text-white text-center p-3">
-    <small>© Trade Journal — modular legacy artifact</small>
-  </footer>
-
-  <!-- Components -->
-  <script type="module" src="components/utils.js"></script>
-  <script type="module" src="components/tradeTable.js"></script>
-  <script type="module" src="components/analytics.js"></script>
-  <script type="module" src="components/filters.js"></script>
-  <!-- App -->
-  <script type="module" src="app.js"></script>
-</body>
-</html>

@@ -1,28 +1,28 @@
-/* Reset everything for a clean slate */
+/* Reset */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* Body background: white with black sparkles */
+/* Body background: animated cloudscape */
 body {
-  font-family: Arial, sans-serif; /* fallback font */
-  background-color: #ffffff;
-  background-image: radial-gradient(black 1px, transparent 1px);
-  background-size: 20px 20px; /* adjust spacing of sparkles */
+  font-family: Arial, sans-serif;
+  background: url('images/kendrick-fernandez-BD_MtME_UW4-unsplash.jpeg') repeat;
+  background-size: cover;
+  animation: drift 60s linear infinite;
   color: #333;
 }
 
-/* Header styling */
+/* Header */
 header {
-  background-color: #000000; /* black header */
+  background-color: #000000;
   color: #ffffff;
   padding: 20px;
   text-align: left;
 }
 
-/* Website Title in header */
+/* Title */
 header h1 {
   font-family: "BankGothic MD BT", sans-serif;
   font-style: italic;
@@ -30,13 +30,19 @@ header h1 {
   margin: 0;
 }
 
-/* Footer styling */
+/* Footer */
 footer {
-  background-color: #000000; /* black footer */
+  background-color: #000000;
   color: #ffffff;
   padding: 15px;
   text-align: center;
   position: fixed;
   bottom: 0;
   width: 100%;
+}
+
+/* Background animation */
+@keyframes drift {
+  0% { background-position: 0 0; }
+  100% { background-position: 1000px 1000px; }
 }
