@@ -11,7 +11,7 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <!-- Header -->
+  <!-- Header with Rah Method title -->
   <header>
     <h1>Rah Method</h1>
   </header>
@@ -70,3 +70,84 @@
         <div class="col-md-3">
           <label for="filterTicker" class="form-label">Filter by ticker</label>
           <input id="filterTicker" type="text" class="form-control" placeholder="e.g., AAPL" />
+        </div>
+        <div class="col-md-3">
+          <label for="filterDirection" class="form-label">Filter by direction</label>
+          <select id="filterDirection" class="form-select">
+            <option value="">All</option>
+            <option value="long">Long</option>
+            <option value="short">Short</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <label for="sortBy" class="form-label">Sort by</label>
+          <select id="sortBy" class="form-select">
+            <option value="date">Date</option>
+            <option value="pnl">P&L</option>
+            <option value="ticker">Ticker</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <button type="button" class="btn btn-warning mt-4" id="exportBtn">Export CSV</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trades Table -->
+    <section class="card p-3 mb-4">
+      <h2>Trade history</h2>
+      <div class="table-responsive">
+        <table id="tradeTable" class="table table-striped table-hover">
+          <thead class="table-dark">
+            <tr>
+              <th>Ticker</th>
+              <th>Direction</th>
+              <th>Entry</th>
+              <th>Exit</th>
+              <th>Size</th>
+              <th>P&L</th>
+              <th>Strategy</th>
+              <th>Notes</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+            <!-- Populated by JavaScript -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Analytics -->
+    <section class="card p-3">
+      <h2>Analytics</h2>
+      <div class="row">
+        <div class="col-md-6 mb-4">
+          <canvas id="pnlChart"></canvas>
+        </div>
+        <div class="col-md-6 mb-4">
+          <canvas id="winRateChart"></canvas>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div id="stats" class="alert alert-info">
+            <!-- Stats populated by JavaScript -->
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Rah Method Trading Journal. All rights reserved.</p>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="components/utils.js"></script>
+  <script src="components/tradeTable.js"></script>
+  <script src="components/analytics.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
