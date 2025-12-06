@@ -44,8 +44,9 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       showStatus(loginStatus, 'Logging in...', 'info');
 
-      // TODO: Replace with actual API call
-      const response = await fetch('/api/auth/login', {
+      // Determine backend host (when opened via file:// use localhost:3000)
+      const API_HOST = (location.protocol === 'file:') ? 'http://localhost:3000' : '';
+      const response = await fetch(`${API_HOST}/api/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -107,8 +108,9 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       showStatus(signupStatus, 'Creating account...', 'info');
 
-      // TODO: Replace with actual API call
-      const response = await fetch('/api/auth/signup', {
+      // Determine backend host (when opened via file:// use localhost:3000)
+      const API_HOST = (location.protocol === 'file:') ? 'http://localhost:3000' : '';
+      const response = await fetch(`${API_HOST}/api/auth/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

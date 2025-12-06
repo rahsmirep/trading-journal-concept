@@ -1,4 +1,4 @@
-const API_BASE = '/api/trades';
+const API_BASE = (location.protocol === 'file:') ? 'http://localhost:3000/api/trades' : '/api/trades';
 
 const els = {
   form: document.getElementById('tradeForm'),
