@@ -1,6 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../../db/db');
+const auth = require('../middleware/auth');
+
+// Protect all trade routes - user must be authenticated
+router.use(auth);
 
 // Local in-memory fallback in case DB is offline
 const fallbackTrades = [];
@@ -24,13 +28,12 @@ function mapRowToTrade(row) {
 // GET /api/trades - list all trades
 router.get('/', async (req, res) => {
 	try {
-		const [rows] = await db.promise().query('SELECT * FROM trades ORDER BY timestamp DESC');
+		const rows = await db.query('SELECT * FROM trades ORDER BY timestamp DESC', []);
 		res.json(rows.map(mapRowToTrade));
 	} catch (err) {
 		// DB unavailable: return in-memory fallback
 		console.warn('DB read failed; falling back to in-memory store:', err.message);
-		res.json(fallbackTrades.slice().reverse())
-		;
+		res.json(fallbackTrades.slice().reverse());
 	}
 });
 
@@ -72,8 +75,8 @@ router.post('/', async (req, res) => {
 	try {
 		// Use `exit_price` column and include date fields in the insert
 		const sql = "INSERT INTO trades (ticker, entry, exit_price, size, direction, notes, pnl, strategy, entry_date, exit_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-		const [result] = await db.promise().execute(sql, [ticker, entry, exit, size, direction || null, notes || null, pnl || null, strategy || null, entry_date, exit_date]);
-		const [rows] = await db.promise().query('SELECT * FROM trades WHERE id = ?', [result.insertId]);
+		const result = await db.query(sql, [ticker, entry, exit, size, direction || null, notes || null, pnl || null, strategy || null, entry_date, exit_date]);
+		const rows = await db.query('SELECT * FROM trades WHERE id = ?', [result.insertId]);
 		if (rows.length === 0) return res.status(500).json({ error: 'Created trade not found' });
 		return res.status(201).json(mapRowToTrade(rows[0]));
 	} catch (err) {

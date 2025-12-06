@@ -2,6 +2,14 @@
 CREATE DATABASE trade_journal;
 USE trade_journal;
 
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100),
+    email VARCHAR(100) NOT NULL UNIQUE,
+    passwordHash VARCHAR(255) NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE trades (
     id INT AUTO_INCREMENT PRIMARY KEY,
     ticker VARCHAR(20) NOT NULL,
