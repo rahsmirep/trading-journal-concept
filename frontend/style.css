@@ -177,3 +177,144 @@ main h2 {
 .status.error {
   color: #dc3545;
 }
+
+/* Authentication Page Styles */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 200px);
+  padding: 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+.auth-card {
+  background-color: #fff;
+  border: 2px solid #000;
+  border-radius: 12px;
+  padding: 3rem;
+  width: 100%;
+  max-width: 450px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+}
+
+.auth-card h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #000;
+  font-weight: 700;
+  border-bottom: 3px solid #000;
+  padding-bottom: 1rem;
+}
+
+.auth-form {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.auth-card .form-label {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.auth-card .form-control,
+.auth-card .form-select {
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  color: #333;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.auth-card .form-control:focus,
+.auth-card .form-select:focus {
+  background-color: #fff;
+  border-color: #000;
+  box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.25);
+}
+
+.auth-card .form-check-input {
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.auth-card .form-check-input:checked {
+  background-color: #000;
+  border-color: #000;
+}
+
+.auth-card .btn-primary {
+  background-color: #000;
+  border-color: #000;
+  color: #fff;
+  font-weight: 600;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.auth-card .btn-primary:hover {
+  background-color: #333;
+  border-color: #333;
+}
+
+.auth-card .btn-primary:active {
+  background-color: #000;
+  border-color: #000;
+}
+
+.auth-link {
+  color: #000;
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.3s ease;
+}
+
+.auth-link:hover {
+  border-bottom-color: #000;
+  color: #000;
+}
+
+.auth-card .status {
+  text-align: center;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.auth-card .status.success {
+  color: #28a745;
+}
+
+.auth-card .status.error {
+  color: #dc3545;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 576px) {
+  .auth-card {
+    padding: 2rem 1.5rem;
+  }
+
+  .auth-card h2 {
+    font-size: 1.5rem;
+  }
+
+  .auth-container {
+    padding: 1rem;
+    min-height: calc(100vh - 150px);
+  }
+}
