@@ -26,8 +26,9 @@ class Sparkle {
       }
     }
 
-    // Gentle drift
-    this.x += Math.sin(performance.now() * 0.001 + this.y) * 0.01;
+    // More noticeable drift
+    this.x += Math.sin(performance.now() * 0.0005 + this.y) * 0.1;
+    this.y += Math.cos(performance.now() * 0.0003 + this.x) * 0.05;
   }
 
   draw(ctx) {
@@ -60,7 +61,7 @@ class SparkleAnimation {
 
   createSparkles() {
     this.sparkles = [];
-    const sparkleCount = Math.floor((this.canvas.width * this.canvas.height) / 50000);
+    const sparkleCount = Math.floor((this.canvas.width * this.canvas.height) / 8000);
 
     for (let i = 0; i < sparkleCount; i++) {
       const x = Math.random() * this.canvas.width;
