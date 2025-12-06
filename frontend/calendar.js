@@ -17,14 +17,15 @@ class TradeCalendar {
   init() {
     this.render();
     this.attachEvents();
+    this.setupLazyLoading();
   }
 
   render() {
     this.container.innerHTML = '';
     const currentYear = new Date().getFullYear();
     
-    // Render years from startYear to currentYear + 5
-    for (let year = this.startYear; year <= currentYear + 5; year++) {
+    // Render years from startYear to currentYear + 50 (effectively infinite)
+    for (let year = this.startYear; year <= currentYear + 50; year++) {
       const yearDiv = document.createElement('div');
       yearDiv.className = 'calendar-year';
       yearDiv.dataset.year = year;
@@ -207,6 +208,82 @@ class TradeCalendar {
 
   getSelectedDate() {
     return this.selectedDate;
+  }
+
+  setupLazyLoading() {
+    // Watch for when user scrolls near the end, add more years
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          this.addMoreYears();
+        }
+      });
+    });
+
+    // Observe the last year div
+    const lastYear = this.container.lastChild;
+    if (lastYear) {
+      observer.observe(lastYear);
+    }
+  }
+
+  addMoreYears() {
+    const currentYear = new Date().getFullYear();
+    const lastYearElement = this.container.lastChild;
+    const lastYearNumber = parseInt(lastYearElement.dataset.year);
+
+    // Add 10 more years when user reaches the end
+    for (let year = lastYearNumber + 1; year <= lastYearNumber + 10; year++) {
+      const yearDiv = document.createElement('div');
+      yearDiv.className = 'calendar-year';
+      yearDiv.dataset.year = year;
+
+      const yearLabel = document.createElement('div');
+      yearLabel.className = 'calendar-year-label';
+      yearLabel.textContent = year;
+
+      const monthsDiv = document.createElement('div');
+      monthsDiv.className = 'calendar-months';
+
+      // Create month buttons
+      for (let month = 0; month < 12; month++) {
+        const monthBtn = document.createElement('div');
+        monthBtn.className = 'calendar-month';
+        monthBtn.textContent = this.months[month].substring(0, 3);
+        monthBtn.dataset.month = month;
+        monthBtn.dataset.year = year;
+
+        monthBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          this.selectMonth(year, month, monthBtn);
+        });
+
+        monthsDiv.appendChild(monthBtn);
+      }
+
+      yearDiv.appendChild(yearLabel);
+      yearDiv.appendChild(monthsDiv);
+
+      yearDiv.addEventListener('click', () => {
+        this.toggleYear(yearDiv);
+      });
+
+      this.container.appendChild(yearDiv);
+    }
+
+    // Re-observe the new last year
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          this.addMoreYears();
+        }
+      });
+    });
+
+    const newLastYear = this.container.lastChild;
+    if (newLastYear) {
+      observer.observe(newLastYear);
+    }
   }
 }
 
