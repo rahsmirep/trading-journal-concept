@@ -10,6 +10,7 @@ class TradeCalendar {
       'January', 'February', 'March', 'April', 'May', 'June',
       'July', 'August', 'September', 'October', 'November', 'December'
     ];
+    this.dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     this.init();
   }
 
@@ -76,7 +77,7 @@ class TradeCalendar {
   }
 
   selectMonth(year, month, monthBtn) {
-    // Remove previous selection
+    // Remove previous selection from month buttons
     document.querySelectorAll('.calendar-month.selected').forEach((m) => {
       m.classList.remove('selected');
     });
@@ -87,12 +88,114 @@ class TradeCalendar {
     // Create date object (1st of selected month)
     this.selectedDate = new Date(year, month, 1);
 
+    // Generate and display full month calendar grid
+    this.displayMonthGrid(year, month);
+
     // Dispatch custom event with selected date
     const event = new CustomEvent('dateSelected', {
       detail: {
         date: this.selectedDate,
         year,
         month,
+        monthName: this.months[month],
+      },
+    });
+    document.dispatchEvent(event);
+  }
+
+  displayMonthGrid(year, month) {
+    // Create or update the calendar grid container
+    let gridContainer = document.getElementById('calendarGrid');
+    if (!gridContainer) {
+      gridContainer = document.createElement('div');
+      gridContainer.id = 'calendarGrid';
+      gridContainer.className = 'calendar-grid-container';
+      this.container.parentElement.insertBefore(gridContainer, this.container.nextSibling);
+    }
+
+    gridContainer.innerHTML = '';
+
+    // Month title
+    const title = document.createElement('div');
+    title.className = 'calendar-grid-title';
+    title.textContent = `${this.months[month]} ${year}`;
+    gridContainer.appendChild(title);
+
+    // Day headers (Sun-Sat)
+    const daysHeaderDiv = document.createElement('div');
+    daysHeaderDiv.className = 'calendar-grid-days-header';
+    this.dayNames.forEach((day) => {
+      const dayHeader = document.createElement('div');
+      dayHeader.className = 'calendar-grid-day-header';
+      dayHeader.textContent = day;
+      daysHeaderDiv.appendChild(dayHeader);
+    });
+    gridContainer.appendChild(daysHeaderDiv);
+
+    // Calendar grid
+    const gridDiv = document.createElement('div');
+    gridDiv.className = 'calendar-grid';
+
+    // Get first day of month (0 = Sunday, 1 = Monday, etc.)
+    const firstDay = new Date(year, month, 1).getDay();
+    // Get number of days in month
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    // Add empty cells before first day
+    for (let i = 0; i < firstDay; i++) {
+      const emptyCell = document.createElement('div');
+      emptyCell.className = 'calendar-grid-empty';
+      gridDiv.appendChild(emptyCell);
+    }
+
+    // Add day cells
+    for (let day = 1; day <= daysInMonth; day++) {
+      const dayCell = document.createElement('div');
+      dayCell.className = 'calendar-grid-day';
+      dayCell.textContent = day;
+      dayCell.dataset.day = day;
+      dayCell.dataset.date = new Date(year, month, day).toISOString().split('T')[0];
+
+      // Highlight today
+      const today = new Date();
+      if (
+        day === today.getDate() &&
+        month === today.getMonth() &&
+        year === today.getFullYear()
+      ) {
+        dayCell.classList.add('today');
+      }
+
+      dayCell.addEventListener('click', () => {
+        this.selectDay(year, month, day, dayCell);
+      });
+
+      gridDiv.appendChild(dayCell);
+    }
+
+    gridContainer.appendChild(gridDiv);
+  }
+
+  selectDay(year, month, day, dayCell) {
+    // Remove previous day selection
+    document.querySelectorAll('.calendar-grid-day.selected').forEach((d) => {
+      d.classList.remove('selected');
+    });
+
+    // Add selection to clicked day
+    dayCell.classList.add('selected');
+
+    // Update selected date
+    this.selectedDate = new Date(year, month, day);
+
+    // Dispatch day selected event
+    const event = new CustomEvent('daySelected', {
+      detail: {
+        date: this.selectedDate,
+        year,
+        month,
+        day,
+        dateString: dayCell.dataset.date,
         monthName: this.months[month],
       },
     });
@@ -108,9 +211,14 @@ class TradeCalendar {
 document.addEventListener('DOMContentLoaded', () => {
   const calendar = new TradeCalendar('calendarContainer');
 
-  // Listen for date selection and optionally populate a hidden field
+  // Listen for day selection
+  document.addEventListener('daySelected', (e) => {
+    console.log('Day selected:', e.detail);
+  });
+
+  // Listen for month selection
   document.addEventListener('dateSelected', (e) => {
-    console.log('Date selected:', e.detail);
-    // You can use this to populate a date field or update the form
+    console.log('Month selected:', e.detail);
   });
 });
+
