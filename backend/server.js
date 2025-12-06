@@ -1,6 +1,7 @@
 const express = require('express');       // ✅ Import Express framework
 const cors = require('cors');             // ✅ Import CORS middleware
 const tradeRoutes = require('./routes/trades'); // ✅ Import trade route module
+const authRoutes = require('./routes/auth');   // ✅ Import simple auth routes for dev
 
 const app = express();                    // ✅ Initialize Express app
 
@@ -12,6 +13,8 @@ app.use(express.json());                  // Parses incoming JSON bodies
 app.use('/api/trades', tradeRoutes);      // Mounts trade routes at /api/trades
 // Also mount the same routes (compatibility) at /trades for PowerShell or legacy calls
 app.use('/trades', tradeRoutes);
+// Dev auth routes (in-memory)
+app.use('/api/auth', authRoutes);
 
 // ✅ Health Check Route
 app.get('/', (req, res) => {
