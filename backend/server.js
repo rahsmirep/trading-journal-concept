@@ -1,5 +1,6 @@
 const express = require('express');       // ✅ Import Express framework
 const cors = require('cors');             // ✅ Import CORS middleware
+const path = require('path');             // ✅ Import path module
 const tradeRoutes = require('./routes/trades'); // ✅ Import trade route module
 const authRoutes = require('./routes/auth');   // ✅ Import simple auth routes for dev
 
@@ -8,6 +9,7 @@ const app = express();                    // ✅ Initialize Express app
 // ✅ Middleware
 app.use(cors());                          // Enables cross-origin requests
 app.use(express.json());                  // Parses incoming JSON bodies
+app.use(express.static(path.join(__dirname, '../frontend'))); // Serve frontend files
 
 // ✅ API Routes
 app.use('/api/trades', tradeRoutes);      // Mounts trade routes at /api/trades
