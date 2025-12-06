@@ -17,10 +17,18 @@ const els = {
 
 let allTrades = [];
 
+function authHeaders() {
+  const token = localStorage.getItem('token');
+  const headers = { 'Content-Type': 'application/json' };
+  if (token) headers['Authorization'] = `Bearer ${token}`;
+  return headers;
+}
+
 async function fetchTrades() {
   els.archiveStatus.textContent = 'Loading trades...';
   try {
-    const res = await fetch(API_BASE);
+    const res = await fetch(API_BASE, { headers: authHeaders() });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     allTrades = Array.isArray(data) ? data : (data.trades || []);
     renderArchive();
@@ -57,10 +65,13 @@ async function submitTrade(e) {
   try {
     const res = await fetch(API_BASE, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: authHeaders(),
       body: JSON.stringify(trade),
     });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    if (!res.ok) {
+      const errBody = await res.json().catch(() => ({}));
+      throw new Error(errBody.message || `HTTP ${res.status}`);
+    }
     els.formStatus.textContent = 'Trade logged successfully.';
     els.form.reset();
     await fetchTrades();
