@@ -1,0 +1,311 @@
+/* Modern Trade Form & Calendar UI */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Geist:wght@400;500;600&display=swap');
+
+/* Trading Dashboard Layout */
+.trading-dashboard {
+  position: relative;
+  z-index: 1;
+  padding: 3rem 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.trade-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+/* Trade Card */
+.trade-card {
+  background-color: #fff;
+  border-radius: 20px;
+  padding: 2.5rem;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.trade-card:hover {
+  box-shadow: 0 16px 50px rgba(0, 0, 0, 0.16);
+  transform: translateY(-2px);
+}
+
+.trade-card-title {
+  font-family: 'Inter', 'Geist', sans-serif;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #000;
+  margin: 0 0 1.5rem 0;
+  letter-spacing: -0.5px;
+}
+
+/* Trade Form */
+.trade-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.form-label {
+  font-family: 'Inter', 'Geist', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  letter-spacing: 0.3px;
+}
+
+.form-input {
+  font-family: 'Inter', 'Geist', sans-serif;
+  font-size: 1rem;
+  padding: 0.85rem 1.2rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  background-color: #fafafa;
+  color: #1a1a1a;
+  transition: all 0.25s ease;
+  outline: none;
+  font-weight: 500;
+}
+
+.form-input:focus {
+  border-color: #000;
+  background-color: #fff;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.08);
+}
+
+.form-input::placeholder {
+  color: #999;
+  font-weight: 400;
+}
+
+.form-input textarea {
+  resize: vertical;
+  min-height: 80px;
+  font-family: 'Inter', 'Geist', sans-serif;
+}
+
+/* Form Actions */
+.form-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.btn-submit,
+.btn-reset {
+  font-family: 'Inter', 'Geist', sans-serif;
+  padding: 0.95rem 1.5rem;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  letter-spacing: 0.5px;
+}
+
+.btn-submit {
+  background-color: #000;
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-submit:hover {
+  background-color: #1a1a1a;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  transform: translateY(-1px);
+}
+
+.btn-submit:active {
+  transform: translateY(0);
+}
+
+.btn-reset {
+  background-color: #f0f0f0;
+  color: #1a1a1a;
+  border: 1px solid #e0e0e0;
+}
+
+.btn-reset:hover {
+  background-color: #e8e8e8;
+  border-color: #d0d0d0;
+}
+
+/* Calendar Card */
+.calendar-card {
+  background-color: #fff;
+  border-radius: 20px;
+  padding: 2.5rem;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  height: fit-content;
+}
+
+.calendar-title {
+  font-family: 'Inter', 'Geist', sans-serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #000;
+  margin: 0 0 1.5rem 0;
+  letter-spacing: -0.5px;
+}
+
+/* Calendar Container */
+.calendar-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.calendar-year {
+  background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+  border-radius: 14px;
+  padding: 1.5rem;
+  border: 1px solid #e0e0e0;
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+.calendar-year:hover {
+  background: linear-gradient(135deg, #efefef 0%, #e0e0e0 100%);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateX(4px);
+}
+
+.calendar-year-label {
+  font-family: 'Inter', 'Geist', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #000;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+.calendar-months {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.calendar-year.expanded .calendar-months {
+  max-height: 500px;
+  opacity: 1;
+}
+
+.calendar-month {
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 0.75rem;
+  text-align: center;
+  cursor: pointer;
+  font-family: 'Inter', 'Geist', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #666;
+  transition: all 0.2s ease;
+}
+
+.calendar-month:hover {
+  background-color: #f8f8f8;
+  border-color: #000;
+  color: #000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.calendar-month.selected {
+  background-color: #000;
+  color: #fff;
+  border-color: #000;
+  font-weight: 600;
+}
+
+/* Status Messages */
+.status {
+  font-family: 'Inter', 'Geist', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-align: center;
+  padding: 0.75rem;
+  border-radius: 8px;
+}
+
+.status.success {
+  color: #059669;
+  background-color: #ecfdf5;
+}
+
+.status.error {
+  color: #dc2626;
+  background-color: #fef2f2;
+}
+
+.status.info {
+  color: #0284c7;
+  background-color: #f0f9ff;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .trade-section {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .trade-card,
+  .calendar-card {
+    padding: 2rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .trading-dashboard {
+    padding: 1.5rem 1rem;
+  }
+
+  .trade-card,
+  .calendar-card {
+    padding: 1.5rem;
+    border-radius: 16px;
+  }
+
+  .trade-card-title,
+  .calendar-title {
+    font-size: 1.35rem;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .calendar-months {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

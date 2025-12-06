@@ -5,6 +5,7 @@
   <title>Rah Method</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link href="style.css" rel="stylesheet" />
+  <link href="trade-ui.css" rel="stylesheet" />
   <!-- Bootstrap (optional for layout) -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
   <!-- Chart.js for analytics -->
@@ -33,51 +34,62 @@
   </header>
 
   <!-- Main Content -->
-  <main class="container my-4">
-    <!-- Trade Entry Form -->
-    <section class="card p-3 mb-4">
-      <h2>Log a trade</h2>
-      <form id="tradeForm" class="row g-3">
-        <div class="col-md-2">
-          <label for="ticker" class="form-label">Ticker</label>
-          <input id="ticker" name="ticker" type="text" class="form-control" placeholder="AAPL, ES, BTC" required />
-        </div>
+  <main class="trading-dashboard">
+    <!-- Trade Form & Calendar Container -->
+    <div class="trade-section">
+      <!-- Trade Entry Form Card -->
+      <div class="trade-card">
+        <h2 class="trade-card-title">Log a Trade</h2>
+        <form id="tradeForm" class="trade-form">
+          <div class="form-group">
+            <label for="ticker" class="form-label">Ticker</label>
+            <input id="ticker" name="ticker" type="text" class="form-input" placeholder="AAPL" required />
+          </div>
 
-        <div class="col-md-2">
-          <label for="direction" class="form-label">Direction</label>
-          <select id="direction" name="direction" class="form-select" required>
-            <option value="long">Long</option>
-            <option value="short">Short</option>
-          </select>
-        </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="direction" class="form-label">Direction</label>
+              <select id="direction" name="direction" class="form-input" required>
+                <option value="long">Long</option>
+                <option value="short">Short</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="entry" class="form-label">Entry</label>
+              <input id="entry" name="entry" type="number" step="0.0001" class="form-input" placeholder="0.00" required />
+            </div>
+          </div>
 
-        <div class="col-md-2">
-          <label for="entry" class="form-label">Entry price</label>
-          <input id="entry" name="entry" type="number" step="0.0001" class="form-control" placeholder="0.00" required />
-        </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="exit" class="form-label">Exit</label>
+              <input id="exit" name="exit" type="number" step="0.0001" class="form-input" placeholder="0.00" required />
+            </div>
+            <div class="form-group">
+              <label for="size" class="form-label">Size</label>
+              <input id="size" name="size" type="number" step="0.0001" class="form-input" placeholder="0.00" required />
+            </div>
+          </div>
 
-        <div class="col-md-2">
-          <label for="exit" class="form-label">Exit price</label>
-          <input id="exit" name="exit" type="number" step="0.0001" class="form-control" placeholder="0.00" required />
-        </div>
+          <div class="form-group">
+            <label for="notes" class="form-label">Notes</label>
+            <textarea id="notes" name="notes" rows="2" class="form-input" placeholder="Strategy, emotions, triggers..."></textarea>
+          </div>
 
-        <div class="col-md-2">
-          <label for="size" class="form-label">Position size</label>
-          <input id="size" name="size" type="number" step="0.0001" class="form-control" placeholder="0.00" required />
-        </div>
+          <div class="form-actions">
+            <button type="submit" class="btn-submit">Log Trade</button>
+            <button type="reset" class="btn-reset">Clear</button>
+          </div>
+          <p id="formStatus" class="status mt-2" aria-live="polite"></p>
+        </form>
+      </div>
 
-        <div class="col-12">
-          <label for="notes" class="form-label">Notes</label>
-          <textarea id="notes" name="notes" rows="3" class="form-control" placeholder="Strategy, triggers, emotions, inflection points"></textarea>
-        </div>
-
-        <div class="col-12">
-          <button type="submit" class="btn btn-primary">Log trade</button>
-          <button type="reset" class="btn btn-secondary">Reset</button>
-        </div>
-      </form>
-      <p id="formStatus" class="status mt-2" aria-live="polite"></p>
-    </section>
+      <!-- Calendar Card -->
+      <div class="calendar-card">
+        <h3 class="calendar-title">Date Selector</h3>
+        <div id="calendarContainer" class="calendar-container"></div>
+      </div>
+    </div>
 
     <!-- Archive Controls -->
     <section class="card p-3 mb-4">
@@ -161,6 +173,7 @@
   </footer>
 
   <!-- Scripts -->
+  <script src="calendar.js"></script>
   <script src="sparkles.js"></script>
   <script src="components/utils.js"></script>
   <script src="components/tradeTable.js"></script>
