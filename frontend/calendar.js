@@ -10,7 +10,7 @@ class TradeCalendar {
       'January', 'February', 'March', 'April', 'May', 'June',
       'July', 'August', 'September', 'October', 'November', 'December'
     ];
-    this.dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    this.dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
     this.init();
   }
 
@@ -137,7 +137,10 @@ class TradeCalendar {
     gridDiv.className = 'calendar-grid';
 
     // Get first day of month (0 = Sunday, 1 = Monday, etc.)
-    const firstDay = new Date(year, month, 1).getDay();
+    let firstDay = new Date(year, month, 1).getDay();
+    // Convert Sunday (0) to 6 for Monday-Sunday layout
+    firstDay = firstDay === 0 ? 6 : firstDay - 1;
+    
     // Get number of days in month
     const daysInMonth = new Date(year, month + 1, 0).getDate();
 
