@@ -65,17 +65,16 @@ class SparkleAnimation {
     for (let i = 0; i < sparkleCount; i++) {
       const x = Math.random() * this.canvas.width;
       const y = Math.random() * this.canvas.height;
-      const size = Math.random() * 1.5 + 0.5;
-      const opacity = Math.random() * 0.6 + 0.2;
+      const size = Math.random() * 2 + 1;
+      const opacity = Math.random() * 0.7 + 0.4;
 
       this.sparkles.push(new Sparkle(x, y, size, opacity));
     }
   }
 
   animate() {
-    // Clear canvas
-    this.ctx.fillStyle = '#ffffff';
-    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    // Clear canvas with transparent background
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
     // Update and draw sparkles
     this.sparkles.forEach((sparkle) => {
