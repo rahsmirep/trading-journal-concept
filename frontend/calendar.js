@@ -111,7 +111,12 @@ class TradeCalendar {
       gridContainer = document.createElement('div');
       gridContainer.id = 'calendarGrid';
       gridContainer.className = 'calendar-grid-container';
-      this.container.parentElement.insertBefore(gridContainer, this.container.nextSibling);
+      // Append the grid inside the calendar card to keep it visually separated
+      // from the trade form. Fall back to parentElement if .closest isn't available.
+      const calendarCard = this.container.closest
+        ? this.container.closest('.calendar-card') || this.container.parentElement
+        : this.container.parentElement;
+      calendarCard.appendChild(gridContainer);
     }
 
     gridContainer.innerHTML = '';
