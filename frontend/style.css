@@ -37,6 +37,14 @@ header {
   z-index: 10;
 }
 
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
 header h1 {
   font-family: 'BankGothic MD BT', 'Arial Black', sans-serif;
   font-size: 3rem;
@@ -45,6 +53,31 @@ header h1 {
   margin: 0;
   letter-spacing: 0.1em;
   text-transform: uppercase;
+}
+
+.logout-btn {
+  font-family: 'Inter', 'Geist', sans-serif;
+  padding: 0.75rem 1.5rem;
+  background-color: #fff;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.2);
+  letter-spacing: 0.5px;
+}
+
+.logout-btn:hover {
+  background-color: #f0f0f0;
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+.logout-btn:active {
+  transform: translateY(0);
 }
 
 /* Footer styling */
