@@ -56,10 +56,25 @@
                 <option value="long">Long</option>
                 <option value="short">Short</option>
               </select>
-            </div>
+          <div class="form-row">
             <div class="form-group">
               <label for="entry" class="form-label">Entry</label>
               <input id="entry" name="entry" type="number" step="0.0001" class="form-input" placeholder="0.00" required />
+            </div>
+            <div class="form-group">
+              <label for="tradeDate" class="form-label">Trade Date</label>
+              <input id="tradeDate" name="tradeDate" type="date" class="form-input" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="tradeTime" class="form-label">Time of Day</label>
+              <input id="tradeTime" name="tradeTime" type="time" class="form-input" required />
+            </div>
+            <div class="form-group">
+              <label for="size" class="form-label">Size</label>
+              <input id="size" name="size" type="number" step="0.0001" class="form-input" placeholder="0.00" required />
             </div>
           </div>
 
@@ -67,10 +82,6 @@
             <div class="form-group">
               <label for="exit" class="form-label">Exit</label>
               <input id="exit" name="exit" type="number" step="0.0001" class="form-input" placeholder="0.00" required />
-            </div>
-            <div class="form-group">
-              <label for="size" class="form-label">Size</label>
-              <input id="size" name="size" type="number" step="0.0001" class="form-input" placeholder="0.00" required />
             </div>
           </div>
 

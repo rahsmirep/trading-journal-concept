@@ -13,6 +13,8 @@ const els = {
   clearFilters: document.getElementById('clearFilters'),
   exportCsv: document.getElementById('exportCsv'),
   refresh: document.getElementById('refresh'),
+  tradeDate: document.getElementById('tradeDate'),
+  tradeTime: document.getElementById('tradeTime'),
 };
 
 let allTrades = [];
@@ -56,9 +58,22 @@ async function submitTrade(e) {
   trade.entry = parseFloat(trade.entry);
   trade.exit = parseFloat(trade.exit);
   trade.size = parseFloat(trade.size);
+  // Keep date and time as strings - they'll be sent to backend
+  trade.entry_date = trade.tradeDate || null;
+  trade.trade_time = trade.tradeTime || null;
 
   if (!trade.ticker || !Number.isFinite(trade.entry) || !Number.isFinite(trade.exit) || !Number.isFinite(trade.size)) {
     els.formStatus.textContent = 'Please fill all required fields with valid numbers.';
+    return;
+  }
+
+  if (!trade.entry_date) {
+    els.formStatus.textContent = 'Please select a trade date.';
+    return;
+  }
+
+  if (!trade.trade_time) {
+    els.formStatus.textContent = 'Please select a trade time.';
     return;
   }
 
@@ -82,6 +97,14 @@ async function submitTrade(e) {
 
 function bindEvents() {
   els.form.addEventListener('submit', submitTrade);
+  
+  // Auto-fill trade date when calendar day is selected
+  document.addEventListener('daySelected', (e) => {
+    if (e.detail.dateString) {
+      els.tradeDate.value = e.detail.dateString;
+    }
+  });
+  
   els.applyFilters.addEventListener('click', renderArchive);
   els.clearFilters.addEventListener('click', () => {
     els.filterTicker.value = '';
