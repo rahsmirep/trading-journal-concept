@@ -1,0 +1,1 @@
+ALTER TABLE trades ADD COLUMN strategy VARCHAR(100) NULL;

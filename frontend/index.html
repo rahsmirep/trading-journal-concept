@@ -29,7 +29,7 @@
   <canvas id="sparkleCanvas"></canvas>
 
   <!-- Header with Rah Method title -->
-  <header>
+  <header class="header">
     <div class="header-container">
       <h1>Rah Method</h1>
       <button id="logoutBtn" class="logout-btn">Logout</button>
@@ -38,7 +38,7 @@
 
   <!-- Main Content -->
   <main class="trading-dashboard">
-    <!-- Trade Form & Calendar Container -->
+    <!-- Trade Form Container -->
     <div class="trade-section">
       <!-- Trade Entry Form Card -->
       <div class="trade-card">
@@ -56,10 +56,10 @@
                 <option value="long">Long</option>
                 <option value="short">Short</option>
               </select>
-          <div class="form-row">
+            </div>
             <div class="form-group">
-              <label for="entry" class="form-label">Entry</label>
-              <input id="entry" name="entry" type="number" step="0.0001" class="form-input" placeholder="0.00" required />
+              <label for="size" class="form-label">Size (contracts/shares)</label>
+              <input id="size" name="size" type="number" class="form-input" placeholder="100" min="1" required />
             </div>
             <div class="form-group">
               <label for="tradeDate" class="form-label">Trade Date</label>
@@ -73,15 +73,8 @@
               <input id="tradeTime" name="tradeTime" type="time" class="form-input" step="60" required />
             </div>
             <div class="form-group">
-              <label for="size" class="form-label">Size</label>
-              <input id="size" name="size" type="number" step="0.0001" class="form-input" placeholder="0.00" required />
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label for="exit" class="form-label">Exit</label>
-              <input id="exit" name="exit" type="number" step="0.0001" class="form-input" placeholder="0.00" required />
+              <label for="pnl" class="form-label">PNL ($)</label>
+              <input id="pnl" name="pnl" type="number" step="0.01" class="form-input" placeholder="0.00" required />
             </div>
           </div>
 
@@ -97,43 +90,9 @@
           <p id="formStatus" class="status mt-2" aria-live="polite"></p>
         </form>
       </div>
-
-      <!-- Calendar Card -->
-      <div class="calendar-card">
-        <h3 class="calendar-title">Date Selector</h3>
-        <div id="calendarContainer" class="calendar-container"></div>
-      </div>
     </div>
 
-    <!-- Archive Controls -->
-    <section class="card p-3 mb-4">
-      <h2>Archive controls</h2>
-      <div class="row g-3">
-        <div class="col-md-3">
-          <label for="filterTicker" class="form-label">Filter by ticker</label>
-          <input id="filterTicker" type="text" class="form-control" placeholder="e.g., AAPL" />
-        </div>
-        <div class="col-md-3">
-          <label for="filterDirection" class="form-label">Filter by direction</label>
-          <select id="filterDirection" class="form-select">
-            <option value="">All</option>
-            <option value="long">Long</option>
-            <option value="short">Short</option>
-          </select>
-        </div>
-        <div class="col-md-2">
-          <label for="sortBy" class="form-label">Sort by</label>
-          <select id="sortBy" class="form-select">
-            <option value="date">Date</option>
-            <option value="pnl">P&L</option>
-            <option value="ticker">Ticker</option>
-          </select>
-        </div>
-        <div class="col-md-2">
-          <button type="button" class="btn btn-warning mt-4" id="exportBtn">Export CSV</button>
-        </div>
-      </div>
-    </section>
+    <!-- Archive Controls removed -->
 
     <!-- Trades Table -->
     <section class="card p-3 mb-4">
@@ -144,13 +103,9 @@
             <tr>
               <th>Ticker</th>
               <th>Direction</th>
-              <th>Entry</th>
-              <th>Exit</th>
               <th>Size</th>
               <th>P&L</th>
-              <th>Strategy</th>
               <th>Notes</th>
-              <th>Date</th>
             </tr>
           </thead>
           <tbody id="tableBody">
@@ -188,11 +143,7 @@
 
   <!-- Scripts -->
   <script src="logout.js"></script>
-  <script src="calendar.js"></script>
   <script src="sparkles.js"></script>
-  <script src="components/utils.js"></script>
-  <script src="components/tradeTable.js"></script>
-  <script src="components/analytics.js"></script>
-  <script src="app.js"></script>
+  <script type="module" src="app.js"></script>
 </body>
 </html>

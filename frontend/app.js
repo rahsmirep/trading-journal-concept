@@ -1,18 +1,15 @@
 const API_BASE = (location.protocol === 'file:') ? 'http://localhost:3000/api/trades' : '/api/trades';
 
+console.log('[app] module loaded');
+
+import { renderAnalytics } from './components/analytics.js';
+import { renderTradeTable } from './components/tradeTable.js';
+
 const els = {
   form: document.getElementById('tradeForm'),
   formStatus: document.getElementById('formStatus'),
   table: document.getElementById('tradeTable'),
-  tbody: document.querySelector('#tradeTable tbody'),
-  archiveStatus: document.getElementById('archiveStatus'),
-  filterTicker: document.getElementById('filterTicker'),
-  filterDirection: document.getElementById('filterDirection'),
-  sortBy: document.getElementById('sortBy'),
-  applyFilters: document.getElementById('applyFilters'),
-  clearFilters: document.getElementById('clearFilters'),
-  exportCsv: document.getElementById('exportCsv'),
-  refresh: document.getElementById('refresh'),
+  tbody: document.getElementById('tableBody'),
   tradeDate: document.getElementById('tradeDate'),
   tradeTime: document.getElementById('tradeTime'),
 };
@@ -27,53 +24,56 @@ function authHeaders() {
 }
 
 async function fetchTrades() {
-  els.archiveStatus.textContent = 'Loading trades...';
+  console.log('[app] fetchTrades() start');
   try {
     const res = await fetch(API_BASE, { headers: authHeaders() });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     allTrades = Array.isArray(data) ? data : (data.trades || []);
+    console.log('[app] fetched trades:', allTrades.length);
     renderArchive();
-    els.archiveStatus.textContent = `Loaded ${allTrades.length} trades.`;
+    await renderAnalytics();
   } catch (err) {
-    els.archiveStatus.textContent = `Error loading trades: ${err.message}`;
+    console.error(`Error loading trades: ${err.message}`);
   }
 }
 
 function renderArchive() {
-  const filtered = Utils.filterTrades(allTrades, {
-    ticker: els.filterTicker.value.trim(),
-    direction: els.filterDirection.value,
-  });
-  const sorted = Utils.sortTrades(filtered, els.sortBy.value);
-  TradeTable.renderTableRows(els.tbody, sorted);
+  // Use renderTradeTable to show table and clear button
+  renderTradeTable();
 }
 
 async function submitTrade(e) {
   e.preventDefault();
   els.formStatus.textContent = '';
+  console.log('[submitTrade] Form submitted');
+
   const fd = new FormData(els.form);
   const trade = Object.fromEntries(fd.entries());
+  console.log('[submitTrade] Trade object:', trade);
 
-  trade.entry = parseFloat(trade.entry);
-  trade.exit = parseFloat(trade.exit);
+  // Parse numbers
   trade.size = parseFloat(trade.size);
+  trade.pnl = parseFloat(trade.pnl);
   // Keep date and time as strings - they'll be sent to backend
   trade.entry_date = trade.tradeDate || null;
   trade.trade_time = trade.tradeTime || null;
 
-  if (!trade.ticker || !Number.isFinite(trade.entry) || !Number.isFinite(trade.exit) || !Number.isFinite(trade.size)) {
+  if (!trade.ticker || !Number.isFinite(trade.pnl) || !Number.isFinite(trade.size)) {
     els.formStatus.textContent = 'Please fill all required fields with valid numbers.';
+    console.warn('[submitTrade] Invalid input');
     return;
   }
 
   if (!trade.entry_date) {
     els.formStatus.textContent = 'Please select a trade date.';
+    console.warn('[submitTrade] Missing trade date');
     return;
   }
 
   if (!trade.trade_time) {
     els.formStatus.textContent = 'Please select a trade time.';
+    console.warn('[submitTrade] Missing trade time');
     return;
   }
 
@@ -85,49 +85,35 @@ async function submitTrade(e) {
     });
     if (!res.ok) {
       const errBody = await res.json().catch(() => ({}));
-      throw new Error(errBody.message || `HTTP ${res.status}`);
+      console.error('[submitTrade] Trade log failed:', errBody.message || `HTTP ${res.status}`);
+      els.formStatus.textContent = `Error logging trade: ${errBody.message || `HTTP ${res.status}`}`;
+      return;
     }
     els.formStatus.textContent = 'Trade logged successfully.';
     els.form.reset();
+    console.log('[submitTrade] Trade logged, refreshing table');
     await fetchTrades();
   } catch (err) {
-    els.formStatus.textContent = `Error logging trade: ${err.message}`;
+    els.formStatus.textContent = `Error logging trade: Backend unreachable or network error.`;
+    console.error('[submitTrade] Error:', err.message);
   }
 }
 
 function bindEvents() {
+  if (!els.form) {
+    console.error('[boot] tradeForm not found in DOM!');
+    return;
+  }
+  console.log('[boot] Binding submit event to tradeForm');
   els.form.addEventListener('submit', submitTrade);
-  
-  // Auto-fill trade date when calendar day is selected
-  document.addEventListener('daySelected', (e) => {
-    if (e.detail.dateString) {
-      els.tradeDate.value = e.detail.dateString;
-    }
-  });
-  
-  els.applyFilters.addEventListener('click', renderArchive);
-  els.clearFilters.addEventListener('click', () => {
-    els.filterTicker.value = '';
-    els.filterDirection.value = '';
-    els.sortBy.value = 'timestamp_desc';
-    renderArchive();
-  });
-  els.exportCsv.addEventListener('click', () => {
-    const headers = ['id', 'timestamp', 'ticker', 'direction', 'entry', 'exit', 'size', 'notes'];
-    const filtered = Utils.filterTrades(allTrades, {
-      ticker: els.filterTicker.value.trim(),
-      direction: els.filterDirection.value,
-    });
-    const sorted = Utils.sortTrades(filtered, els.sortBy.value);
-    const csv = Utils.toCSV(sorted, headers);
-    Utils.download(`trades_${new Date().toISOString().slice(0,19)}.csv`, csv);
-  });
-  els.refresh.addEventListener('click', fetchTrades);
 }
 
-function boot() {
+
+async function boot() {
+  console.log('[app] boot start');
   bindEvents();
-  fetchTrades();
+  await fetchTrades();
+  console.log('[app] boot complete');
 }
 
 document.addEventListener('DOMContentLoaded', boot);

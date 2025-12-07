@@ -1,15 +1,13 @@
-/* Import BankGothic MD BT font */
-@font-face {
-  font-family: 'BankGothic MD BT';
-  src: url('https://fonts.googleapis.com/css2?family=BankGothic:wght@400;700&display=swap') format('woff2');
-}
+
+/* Import Inter font */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
 
 /* White background with black sparkles animation */
 body {
   margin: 0;
   padding: 0;
   background-color: #fff;
-  font-family: Arial, sans-serif;
+  font-family: 'Inter', Arial, sans-serif;
   color: #333;
   position: relative;
   min-height: 100vh;
@@ -28,31 +26,25 @@ body {
 }
 
 /* Header styling */
-header {
-  background-color: #000;
-  color: #fff;
-  padding: 1.5rem 2rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  position: relative;
-  z-index: 10;
-}
-
-.header-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-header h1 {
-  font-family: 'BankGothic MD BT', 'Arial Black', sans-serif;
+.header {
+  font-family: 'Inter', 'Arial Black', sans-serif;
   font-size: 3rem;
   font-weight: 700;
   font-style: italic;
   margin: 0;
   letter-spacing: 0.1em;
   text-transform: uppercase;
+  background-color: #000;
+  color: #fff;
+  padding: 1rem 0;
+}
+.header-container {
+  display: flex;
+  justify-content: space-between;
+
+  align-items: center;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 .logout-btn {
@@ -60,13 +52,13 @@ header h1 {
   padding: 0.75rem 1.5rem;
   background-color: #fff;
   color: #000;
-  border: none;
+  border: 2px solid #000;
   border-radius: 8px;
   font-weight: 600;
   font-size: 0.95rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   letter-spacing: 0.5px;
 }
 

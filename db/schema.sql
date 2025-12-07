@@ -12,6 +12,7 @@ CREATE TABLE users (
 
 CREATE TABLE trades (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
     ticker VARCHAR(20) NOT NULL,
     entry DECIMAL(10,4) NOT NULL,
     exit_price DECIMAL(10,4) NOT NULL,
@@ -22,5 +23,6 @@ CREATE TABLE trades (
     strategy VARCHAR(100) NULL,
     timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
     entry_date DATE NULL,
-    exit_date DATE NULL
+    exit_date DATE NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
